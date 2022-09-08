@@ -59,7 +59,7 @@ export function useCellUrlConfig(url?: MaybeRef<string>, disableOverlay?: MaybeR
   const config = use()
 
   if (!config) {
-    setup(url)
+    return setup(url)
   } else {
     if (url) config.url.value = unref(url)
     if (disableOverlay) config.disableOverlay.value = unref(disableOverlay)
