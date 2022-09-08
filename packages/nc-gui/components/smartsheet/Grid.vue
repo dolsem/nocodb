@@ -2,10 +2,8 @@
 import type { ColumnType } from 'nocodb-sdk'
 import { UITypes, isVirtualCol } from 'nocodb-sdk'
 import { message } from 'ant-design-vue'
-import { useI18n } from 'vue-i18n'
 import {
   ActiveViewInj,
-  CellUrlDisableOverlayInj,
   ChangePageInj,
   FieldsInj,
   IsFormInj,
@@ -25,8 +23,10 @@ import {
   provide,
   reactive,
   ref,
+  useCellUrlConfig,
   useEventListener,
   useGridViewColumnWidth,
+  useI18n,
   useSmartsheetStoreOrThrow,
   useUIPermission,
   useViewData,
@@ -110,8 +110,7 @@ provide(ChangePageInj, changePage)
 
 provide(ReadonlyInj, !hasEditPermission)
 
-const disableUrlOverlay = ref(false)
-provide(CellUrlDisableOverlayInj, disableUrlOverlay)
+const { disableOverlay } = useCellUrlConfig()!
 
 reloadViewDataHook?.on(async () => {
   await loadData()
@@ -206,7 +205,7 @@ const makeEditable = (row: Row, col: ColumnType) => {
 /** handle keypress events */
 const onKeyDown = async (e: KeyboardEvent) => {
   if (e.key === 'Alt') {
-    disableUrlOverlay.value = true
+    disableOverlay.value = true
     return
   }
   if (selected.row === null || selected.col === null) return
@@ -294,7 +293,7 @@ const onKeyDown = async (e: KeyboardEvent) => {
 }
 const onKeyUp = async (e: KeyboardEvent) => {
   if (e.key === 'Alt') {
-    disableUrlOverlay.value = false
+    disableOverlay.value = false
   }
 }
 

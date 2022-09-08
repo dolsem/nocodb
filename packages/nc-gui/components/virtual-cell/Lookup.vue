@@ -2,7 +2,18 @@
 import type { ColumnType, LinkToAnotherRecordType, LookupType } from 'nocodb-sdk'
 import { RelationTypes, UITypes, isVirtualCol } from 'nocodb-sdk'
 import type { Ref } from 'vue'
-import { CellUrlDisableOverlayInj, CellValueInj, ColumnInj, MetaInj, ReadonlyInj, computed, inject, provide, useColumn, useMetas } from '#imports'
+import {
+  CellValueInj,
+  ColumnInj,
+  MetaInj,
+  ReadonlyInj,
+  computed,
+  inject,
+  provide,
+  useCellUrlConfig,
+  useColumn,
+  useMetas,
+} from '#imports'
 
 const { metas, getMeta } = useMetas()
 
@@ -32,7 +43,8 @@ const lookupColumn = computed<any>(
 )
 
 provide(MetaInj, lookupTableMeta)
-provide(CellUrlDisableOverlayInj, ref(true))
+
+useCellUrlConfig(undefined, true)
 
 const lookupColumnMetaProps = useColumn(lookupColumn)
 </script>
