@@ -64,10 +64,10 @@ watch(
     <input v-if="editEnabled" :ref="focus" v-model="vModel" class="outline-none text-sm w-full" @blur="editEnabled = false" />
 
     <nuxt-link
-      v-else-if="isValid && !urlOptions?.overlay"
+      v-else-if="isValid && !cellUrlOptions?.overlay"
       class="z-3 text-sm underline hover:opacity-75"
       :to="url"
-      :target="urlOptions?.behavior === 'replace' ? undefined : '_blank'"
+      :target="cellUrlOptions?.behavior === 'replace' ? undefined : '_blank'"
     >
       {{ value }}
     </nuxt-link>
