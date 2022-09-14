@@ -4,6 +4,7 @@ import { UITypes, isVirtualCol } from 'nocodb-sdk'
 import { message } from 'ant-design-vue'
 import {
   ActiveViewInj,
+  CellUrlDisableOverlayInj,
   ChangePageInj,
   FieldsInj,
   IsFormInj,
@@ -23,7 +24,6 @@ import {
   provide,
   reactive,
   ref,
-  useCellUrlConfig,
   useEventListener,
   useGridViewColumnWidth,
   useI18n,
@@ -110,7 +110,8 @@ provide(ChangePageInj, changePage)
 
 provide(ReadonlyInj, !hasEditPermission)
 
-const { disableOverlay } = useCellUrlConfig()!
+const disableUrlOverlay = ref(false)
+provide(CellUrlDisableOverlayInj, disableUrlOverlay)
 
 reloadViewDataHook?.on(async () => {
   await loadData()
@@ -205,7 +206,7 @@ const makeEditable = (row: Row, col: ColumnType) => {
 /** handle keypress events */
 const onKeyDown = async (e: KeyboardEvent) => {
   if (e.key === 'Alt') {
-    disableOverlay.value = true
+    disableUrlOverlay.value = true
     return
   }
   if (selected.row === null || selected.col === null) return
@@ -293,7 +294,7 @@ const onKeyDown = async (e: KeyboardEvent) => {
 }
 const onKeyUp = async (e: KeyboardEvent) => {
   if (e.key === 'Alt') {
-    disableOverlay.value = false
+    disableUrlOverlay.value = false
   }
 }
 

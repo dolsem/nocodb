@@ -1,7 +1,18 @@
 <script setup lang="ts">
 import type { VNodeRef } from '@vue/runtime-core'
 import { message } from 'ant-design-vue'
-import { ColumnInj, EditModeInj, computed, inject, isValidURL, ref, useCellUrlConfig, useI18n, watch } from '#imports'
+import {
+  CellUrlDisableOverlayInj,
+  ColumnInj,
+  EditModeInj,
+  computed,
+  inject,
+  isValidURL,
+  ref,
+  useCellUrlConfig,
+  useI18n,
+  watch,
+} from '#imports'
 import MiCircleWarning from '~icons/mi/circle-warning'
 
 interface Props {
@@ -17,6 +28,8 @@ const { t } = useI18n()
 const column = inject(ColumnInj)!
 
 const editEnabled = inject(EditModeInj)!
+
+const disableOverlay = inject(CellUrlDisableOverlayInj)
 
 // Used in the logic of when to display error since we are not storing the url if its not valid
 const localState = ref(value)
@@ -42,7 +55,7 @@ const url = computed(() => {
   return `https://${value}`
 })
 
-const { cellUrlOptions, disableOverlay } = useCellUrlConfig(url)!
+const { cellUrlOptions } = useCellUrlConfig(url)!
 
 const focus: VNodeRef = (el) => (el as HTMLInputElement)?.focus()
 

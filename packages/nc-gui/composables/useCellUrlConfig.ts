@@ -25,8 +25,6 @@ const [setup, use] = useInjectionState((url?: MaybeRef<string>) => {
 
   const _url = ref<string>(unref(url) ?? '')
 
-  const disableOverlay = ref(false)
-
   const config = $computed(() => ({
     behavior: route.query.url_behavior as string | undefined,
     overlay: route.query.url_overlay as string | undefined,
@@ -48,21 +46,19 @@ const [setup, use] = useInjectionState((url?: MaybeRef<string>) => {
   return {
     cellUrlConfig: config,
     cellUrlOptions,
-    disableOverlay,
     url: _url,
   }
 }, 'cell-url-config')
 
 export const provideCellUrlConfig = setup
 
-export function useCellUrlConfig(url?: MaybeRef<string>, disableOverlay?: MaybeRef<boolean>) {
+export function useCellUrlConfig(url?: MaybeRef<string>) {
   const config = use()
 
   if (!config) {
     return setup(url)
   } else {
     if (url) config.url.value = unref(url)
-    if (disableOverlay) config.disableOverlay.value = unref(disableOverlay)
   }
 
   return config
